@@ -1,8 +1,3 @@
-Perfecto, el nombre del proyecto será **RegistroSAR360**.
-
-Aquí tienes el **README.md** actualizado con ese nombre:
-
----
 
 # 🏥 RegistroSAR360
 

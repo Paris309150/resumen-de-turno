@@ -23,11 +23,6 @@ document.getElementById('eventoForm').addEventListener('submit', function (e) {
     const tipoEvento = document.getElementById('tipoEvento').value;
     const cantidad = parseInt(document.getElementById('cantidad').value);
 
-    if (!fecha || !tipoEvento || isNaN(cantidad) || cantidad <= 0) {
-        alert('Complete todos los campos correctamente.');
-        return;
-    }
-
     eventosTurno.push({ fecha, tipoEvento, cantidad });
     resumenTotales[tipoEvento] += cantidad;
 
@@ -63,8 +58,15 @@ function renderEventos() {
             <td>${evento.fecha}</td>
             <td>${evento.tipoEvento}</td>
             <td>${evento.cantidad}</td>
-            <td><button class="delete-btn" onclick="eliminarEvento(${index})">Eliminar</button></td>
+            <td><button class="delete-btn" data-index="${index}">Eliminar</button></td>
         `;
+    });
+
+    tbody.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const index = parseInt(this.getAttribute('data-index'));
+            eliminarEvento(index);
+        });
     });
 }
 
@@ -94,13 +96,65 @@ function renderPacientesComges() {
             <td>${paciente.nombre}</td>
             <td>${paciente.rut}</td>
             <td>${paciente.dau}</td>
-            <td><button class="delete-btn" onclick="eliminarPacienteComges(${index})">Eliminar</button></td>
+            <td><button class="delete-comges-btn" data-index="${index}">Eliminar</button></td>
         `;
+    });
+
+    tbody.querySelectorAll('.delete-comges-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const index = parseInt(this.getAttribute('data-index'));
+            eliminarPacienteComges(index);
+        });
     });
 }
 
+function eliminarPacienteComges(index) {
+    pacientesComges.splice(index, 1);
+    guardarDatos();
+    renderPacientesComges();
+}
+
+// --- GUARDAR DATOS ---
 function guardarDatos() {
     localStorage.setItem('eventosTurno', JSON.stringify(eventosTurno));
     localStorage.setItem('resumenTotales', JSON.stringify(resumenTotales));
     localStorage.setItem('pacientesComges', JSON.stringify(pacientesComges));
 }
+
+// --- DESCARGAR RESUMEN ---
+document.getElementById('descargarResumenCompleto').addEventListener('click', function () {
+    let texto = 'Resumen de Eventos del Turno:\n\n';
+    texto += 'Fecha | Tipo | Cantidad\n';
+    eventosTurno.forEach(evento => {
+        texto += `${evento.fecha} | ${evento.tipoEvento} | ${evento.cantidad}\n`;
+    });
+
+    texto += `\nResumen Total:\n`;
+    texto += `Admitidos: ${resumenTotales.Admitidos}\n`;
+    texto += `Altas: ${resumenTotales.Altas}\n`;
+    texto += `Traslados: ${resumenTotales.Traslados}\n`;
+    texto += `Policial: ${resumenTotales.Policial}\n`;
+    texto += `Derivados: ${resumenTotales.Derivados}\n`;
+
+    texto += `\nPacientes COMGES 9.1:\n\nNombre | RUT | DAU\n`;
+    pacientesComges.forEach(paciente => {
+        texto += `${paciente.nombre} | ${paciente.rut} | ${paciente.dau}\n`;
+    });
+
+    const blob = new Blob([texto], { type: 'text/plain' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'resumen_completo_turno.txt';
+    link.click();
+});
+
+// --- ENVÍO DE CORREO (SIMULADO) ---
+document.getElementById('enviarCorreo').addEventListener('click', function () {
+    const correoDestino = document.getElementById('correoDestino').value;
+    if (!correoDestino) {
+        alert('Por favor, ingrese un correo electrónico.');
+        return;
+    }
+
+    alert(`Simulación de envío de correo a: ${correoDestino}\n\nEl contenido del resumen completo será enviado como archivo adjunto.`);
+});

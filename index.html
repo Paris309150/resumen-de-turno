@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,10 +12,14 @@
             background-color: #f9f9f9;
             color: #333;
         }
-        h1, h2, h3 {
+
+        h1,
+        h2,
+        h3 {
             text-align: center;
             color: #0056b3;
         }
+
         form {
             background-color: #e9ecef;
             padding: 15px;
@@ -22,30 +27,39 @@
             margin-bottom: 20px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        input, select, button {
+
+        input,
+        select,
+        button {
             padding: 10px;
             margin: 5px 0;
             width: 100%;
             box-sizing: border-box;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
         }
-        th, td {
+
+        th,
+        td {
             border: 1px solid #ddd;
             padding: 10px;
             text-align: center;
         }
+
         th {
             background-color: #0056b3;
             color: white;
         }
+
         .buttons-container {
             margin-top: 15px;
             text-align: center;
         }
+
         button {
             background-color: #0056b3;
             color: white;
@@ -53,17 +67,27 @@
             cursor: pointer;
             border-radius: 5px;
         }
+
         button:hover {
             background-color: #003d82;
         }
+
         .delete-btn {
             background-color: #d9534f;
         }
+
         .delete-btn:hover {
             background-color: #c9302c;
         }
+
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
     </style>
 </head>
+
 <body>
     <h1>Registro de Turnos SAR</h1>
 
@@ -121,7 +145,6 @@
         <input type="text" id="dau" required>
 
         <button type="submit">Registrar Paciente COMGES</button>
-        <button type="button" id="limpiarComges">Limpiar Pacientes COMGES</button>
     </form>
 
     <h3>Pacientes COMGES 9.1 Registrados</h3>
@@ -136,7 +159,25 @@
         </thead>
         <tbody id="pacientesComgesTableBody"></tbody>
     </table>
+    <h3>Descargar y Enviar Resumen Completo</h3>
+
+    
+
+    <!-- INPUT PARA CORREO -->
+    <label for="correoDestino">Correo Electrónico:</label>
+    <input type="email" id="correoDestino" placeholder="ejemplo@correo.com">
+    
+    <!-- BOTONES PARA ENVÍO Y DESCARGA -->
+    <div class="buttons-container">
+        <button id="enviarCorreo">Enviar por Correo</button>
+        <button id="descargarResumenCompleto">Descargar Resumen Completo</button>
+    </div>
+    
+    <footer>
+        Creado por Matías Bustos - Zipper
+    </footer>
 
     <script src="main.js"></script>
 </body>
+
 </html>
